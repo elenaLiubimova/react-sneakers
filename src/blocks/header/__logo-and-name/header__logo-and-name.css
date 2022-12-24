@@ -1,0 +1,9 @@
+.header__logo-and-name {
+  display: grid;
+  grid-template-areas: 
+  "logo name"
+  "logo slogan";
+  column-gap: 16px;
+  max-width: 245px;
+  width: 100%;
+}

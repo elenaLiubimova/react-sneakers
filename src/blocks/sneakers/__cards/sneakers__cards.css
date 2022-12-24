@@ -1,0 +1,6 @@
+.sneakers__cards {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 40px;
+}

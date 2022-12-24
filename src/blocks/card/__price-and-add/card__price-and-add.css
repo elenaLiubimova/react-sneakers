@@ -1,0 +1,7 @@
+.card__price-and-add {
+  display: grid;
+  width: 150px;
+  grid-template-areas: 
+  "price add-button"
+  "price-number add-button";
+}

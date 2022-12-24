@@ -1,0 +1,5 @@
+.sneakers__title-and-form {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}

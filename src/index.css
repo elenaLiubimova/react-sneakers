@@ -1,13 +1,32 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@import url(../src/vendor/normalize.css);
+@import url(../src/blocks/root/root.css);
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+@import url(../src/blocks/header/header.css);
+@import url(../src/blocks/header/__logo-and-name/header__logo-and-name.css);
+@import url(../src/blocks/header/__name/header_name.css);
+@import url(../src/blocks/header/__slogan/header__slogan.css);
+@import url(../src/blocks/header/__menu/header__menu.css);
+@import url(../src/blocks/header/__menu-item/header__menu-item.css);
+@import url(../src/blocks/header/__menu-link/header__menu-link.css);
+@import url(../src/blocks/header/__basket/header__basket.css);
+@import url(../src/blocks/header/__price/header__price.css);
+@import url(../src/blocks/header/__likes/header__likes.css);
+@import url(../src/blocks/header/__profile/header__profile.css);
+
+@import url(../src/blocks/logo/logo.css);
+
+@import url(../src/blocks/sneakers/sneakers.css);
+@import url(../src/blocks/sneakers/__title-and-form/sneakers__title-and-form.css);
+@import url(../src/blocks/sneakers/__title/sneakers__title.css);
+@import url(../src/blocks/sneakers/__cards/sneakers__cards.css);
+
+@import url(../src/blocks/card/card.css);
+@import url(../src/blocks/card/__like-button/card__like-button.css);
+@import url(../src/blocks/card/__like-button/_active/card__like-button_active.css);
+@import url(../src/blocks/card/__image/card__image.css);
+@import url(../src/blocks/card/__description/card__description.css);
+@import url(../src/blocks/card/__price-and-add/card__price-and-add.css);
+@import url(../src/blocks/card/__price/card__price.css);
+@import url(../src/blocks/card/__price-number/card__price-number.css);
+@import url(../src/blocks/card/__add-button/card__add-button.css);
+@import url(../src/blocks/card/__add-button/_active/card__add-button_active.css);

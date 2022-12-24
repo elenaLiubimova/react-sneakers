@@ -1,0 +1,7 @@
+.header__slogan {
+  margin: 0;
+  grid-area: slogan;
+
+  color: #9D9D9D;
+  text-align: left;
+}
