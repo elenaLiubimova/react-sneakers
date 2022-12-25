@@ -1,0 +1,5 @@
+.basket-item__image {
+  width: 70px;
+  height: 70px;
+  grid-area: image;
+}

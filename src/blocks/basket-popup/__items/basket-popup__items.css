@@ -1,0 +1,7 @@
+.basket-popup__items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}

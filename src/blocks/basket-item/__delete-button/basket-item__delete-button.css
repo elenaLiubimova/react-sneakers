@@ -1,0 +1,17 @@
+.basket-item__delete-button {
+  width: 32px;
+  height: 32px;
+  grid-area: delete-button;
+  border: 1px solid #F2F2F2;
+  border-radius: 8px;
+  background-color: #fff;
+  background-image: url(../../../images/delete-button.svg);
+  background-repeat: no-repeat;
+  background-size: 11px 11px;
+  background-position: 50% 50%;
+}
+
+.basket-item__delete-button:hover {
+  border: 1px solid #D3D3D3;
+  background-image: url(../../../images/delete-button_hover.svg);
+}

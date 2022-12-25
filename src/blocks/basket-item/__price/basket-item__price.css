@@ -1,0 +1,4 @@
+.basket-item__price {
+  grid-area: price;
+  margin: 0;
+}

@@ -1,0 +1,10 @@
+.sneakers__search-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 250px;
+  height: 45px;
+  padding-left: 18px;
+  border: 1px solid #f3f3f3;
+  border-radius: 20px;
+}
