@@ -1,9 +1,0 @@
-.header__menu-link {
-  display: flex;
-  gap: 10px;
-  cursor: pointer;
-
-  color: #5C5C5C;
-  font-weight: 600;
-  text-decoration: none;
-}

@@ -1,8 +1,0 @@
-.card__price {
-  margin: 0;
-  grid-area: price;
-
-  color: #BDBDBD;
-  text-transform: uppercase;
-  text-align: left;
-}

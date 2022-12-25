@@ -26,7 +26,7 @@ function App() {
 
   const onChangeSearchInput = (evt) => {
     setSearchItem(evt.target.value);
-  }
+  };
 
   return (
     <>
@@ -41,7 +41,11 @@ function App() {
       <main>
         <section className="sneakers">
           <div className="sneakers__title-and-search">
-            <h1 className="sneakers__title">{searchItem ? `Поиск по запросу: "${searchItem}"` : "Все кроссовки"}</h1>
+            <h1 className="sneakers__title">
+              {searchItem
+                ? `Поиск по запросу: "${searchItem}"`
+                : "Все кроссовки"}
+            </h1>
             <div className="sneakers__search-block">
               <img
                 className="sneakers__search-image"
@@ -54,18 +58,27 @@ function App() {
                 onChange={onChangeSearchInput}
                 value={searchItem}
               />
+              {searchItem && (
+                <button
+                  className="basket-item__delete-button"
+                  type="button"
+                  onClick={() => setSearchItem("")}
+                ></button>
+              )}
             </div>
           </div>
           <ul className="sneakers__cards">
-            {cards.map((card) => (
-              <Card
-                image={card.image}
-                description={card.description}
-                price={card.price}
-                key={card.id}
-                onAddButton={(card) => handleAddToBasket(card)}
-              />
-            ))}
+            {cards
+              .filter((card) => card.description.toLowerCase().includes(searchItem.toLowerCase()))
+              .map((card) => (
+                <Card
+                  image={card.image}
+                  description={card.description}
+                  price={card.price}
+                  key={card.id}
+                  onAddButton={(card) => handleAddToBasket(card)}
+                />
+              ))}
           </ul>
         </section>
       </main>

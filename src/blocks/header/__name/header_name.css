@@ -1,7 +1,0 @@
-.header__name {
-  margin: 0;
-  grid-area: name;
-
-  text-transform: uppercase;
-  text-align: left;
-}
