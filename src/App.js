@@ -1,27 +1,51 @@
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import "./App.css";
-import Card from "./components/Card";
 import Header from "./components/Header";
 import BasketPopup from "./components/BasketPopup";
+import Home from "./pages/Home";
+import Favorites from "./pages/Favorites";
 
 function App() {
   const [cards, setCards] = useState([]);
-  const [basketItems, setbasketItems] = useState([]);
+  const [basketItems, setBasketItems] = useState([]);
   const [searchItem, setSearchItem] = useState("");
   const [isBasketPopupOpened, setIsBasketPopupOpened] = useState(false);
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    fetch("https://63a8083e7989ad3286f8f72f.mockapi.io/cards")
+    axios
+      .get("https://63a8083e7989ad3286f8f72f.mockapi.io/cards")
       .then((cardsData) => {
-        return cardsData.json();
-      })
-      .then((json) => {
-        setCards(json);
+        setCards(cardsData.data);
+      });
+    axios
+      .get("https://63a8083e7989ad3286f8f72f.mockapi.io/basket")
+      .then((cardsData) => {
+        setBasketItems(cardsData.data);
+      });
+    axios
+      .get("https://63a8083e7989ad3286f8f72f.mockapi.io/favorites")
+      .then((cardsData) => {
+        setFavorites(cardsData.data);
       });
   }, []);
 
   const handleAddToBasket = (items) => {
-    setbasketItems((prev) => [...prev, items]);
+    axios.post("https://63a8083e7989ad3286f8f72f.mockapi.io/basket", items);
+    setBasketItems((prev) => [...prev, items]);
+  };
+
+  const handleRemoveFromBasket = (id) => {
+    axios.delete(`https://63a8083e7989ad3286f8f72f.mockapi.io/basket/${id}`);
+    setBasketItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleAddToFavorites = (items) => {
+    axios.post("https://63a8083e7989ad3286f8f72f.mockapi.io/favorites", items);
+    setBasketItems((prev) => [...prev, items]);
   };
 
   const onChangeSearchInput = (evt) => {
@@ -34,54 +58,28 @@ function App() {
         <BasketPopup
           items={basketItems}
           onClose={() => setIsBasketPopupOpened(false)}
+          onRemove={handleRemoveFromBasket}
         />
       )}
       ;
       <Header onClickBasket={() => setIsBasketPopupOpened(true)} />
-      <main>
-        <section className="sneakers">
-          <div className="sneakers__title-and-search">
-            <h1 className="sneakers__title">
-              {searchItem
-                ? `Поиск по запросу: "${searchItem}"`
-                : "Все кроссовки"}
-            </h1>
-            <div className="sneakers__search-block">
-              <img
-                className="sneakers__search-image"
-                src="/images/search.svg"
-                alt="Поле поиска"
-              />
-              <input
-                className="sneakers__search-input"
-                placeholder="Поиск..."
-                onChange={onChangeSearchInput}
-                value={searchItem}
-              />
-              {searchItem && (
-                <button
-                  className="basket-item__delete-button"
-                  type="button"
-                  onClick={() => setSearchItem("")}
-                ></button>
-              )}
-            </div>
-          </div>
-          <ul className="sneakers__cards">
-            {cards
-              .filter((card) => card.description.toLowerCase().includes(searchItem.toLowerCase()))
-              .map((card) => (
-                <Card
-                  image={card.image}
-                  description={card.description}
-                  price={card.price}
-                  key={card.id}
-                  onAddButton={(card) => handleAddToBasket(card)}
-                />
-              ))}
-          </ul>
-        </section>
-      </main>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              cards={cards}
+              searchItem={searchItem}
+              onChangeSearchInput={onChangeSearchInput}
+              setSearchItem={setSearchItem}
+              handleAddToFavorites={handleAddToFavorites}
+              handleAddToBasket={handleAddToBasket}
+            />
+          }
+        />
+
+        <Route path="/favorites" element={<Favorites cards={favorites} />} />
+      </Routes>
     </>
   );
 }
