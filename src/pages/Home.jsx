@@ -9,6 +9,25 @@ function Home({
   handleAddToFavorites,
   handleAddToBasket,
 }) {
+  const renderCards = () => {
+    return cards
+      .filter((card) =>
+        card.description.toLowerCase().includes(searchItem.toLowerCase())
+      )
+      .map((card, i) => (
+        <Card
+          key={i}
+          onFavorite={(item) => handleAddToFavorites(item)}
+          onAddButton={(item) => handleAddToBasket(item)}
+          added={basketItems.some(
+            (item) => Number(item.id) === Number(card.id)
+          )}
+          {...card}
+          loading
+        />
+      ));
+  };
+
   return (
     <main>
       <section className="sneakers">
@@ -37,21 +56,7 @@ function Home({
             )}
           </div>
         </div>
-        <ul className="sneakers__cards">
-          {cards
-            .filter((card) =>
-              card.description.toLowerCase().includes(searchItem.toLowerCase())
-            )
-            .map((card, i) => (
-              <Card
-                key={i}
-                onFavorite={(item) => handleAddToFavorites(item)}
-                onAddButton={(item) => handleAddToBasket(item)}
-                added={basketItems.some((item) => Number(item.id) === Number(card.id))}
-                {...card}
-              />
-            ))}
-        </ul>
+        <ul className="sneakers__cards">{renderCards()}</ul>
       </section>
     </main>
   );

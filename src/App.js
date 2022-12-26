@@ -14,6 +14,7 @@ function App() {
   const [searchItem, setSearchItem] = useState("");
   const [isBasketPopupOpened, setIsBasketPopupOpened] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -23,6 +24,8 @@ function App() {
       .get("https://63a8083e7989ad3286f8f72f.mockapi.io/basket");
       const favoritesResponse = await axios
       .get("https://63a8083e7989ad3286f8f72f.mockapi.io/favorites");
+
+      setIsLoading(false);
 
       setCards(cardsResponse.data);
       setBasketItems(basketResponse.data);
@@ -94,6 +97,7 @@ function App() {
               setSearchItem={setSearchItem}
               handleAddToFavorites={handleAddToFavorites}
               handleAddToBasket={handleAddToBasket}
+              isLoading={isLoading}
             />
           }
         />
