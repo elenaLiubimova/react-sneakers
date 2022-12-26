@@ -1,6 +1,6 @@
 import Card from "../components/Card";
 
-function Favorites({ cards }) {
+function Favorites({ cards, onAddToFavorite }) {
   return (
     <main>
       <section className="sneakers">
@@ -11,10 +11,10 @@ function Favorites({ cards }) {
           {cards
             .map((card, i) => (
               <Card
-                image={card.image}
-                description={card.description}
-                price={card.price}
                 key={i}
+                favorited={true}
+                onFavorite={onAddToFavorite}
+                {...card}
               />
             ))}
         </div>

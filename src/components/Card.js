@@ -1,22 +1,39 @@
 import { useState } from "react";
 
-function Card({ image, description, price, onAddButton, onFavorite }) {
-  const [isAdded, setIsAdded] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+function Card({
+  id,
+  image,
+  description,
+  price,
+  onAddButton,
+  onFavorite,
+  favorited = false,
+  added = false
+}) {
+  const [isAdded, setIsAdded] = useState(added);
+  const [isFavorite, setIsFavorite] = useState(favorited);
 
   const handleButtonClick = () => {
-    onAddButton({ image, description, price });
+    onAddButton({ id, image, description, price });
     setIsAdded(!isAdded);
   };
 
   const onClickFavorite = () => {
-    onFavorite({ image, description, price });
+    onFavorite({ id, image, description, price });
     setIsFavorite(!isFavorite);
-  }
+  };
 
   return (
     <li className="card">
-      <button className={isFavorite ? `card__like-button card__like-button_active` : `card__like-button`} type="button" onClick={onClickFavorite}></button>
+      <button
+        className={
+          isFavorite
+            ? `card__like-button card__like-button_active`
+            : `card__like-button`
+        }
+        type="button"
+        onClick={onClickFavorite}
+      ></button>
       <img className="card__image" src={image} />
       <p className="card__description">{description}</p>
       <div className="card__price-and-add">

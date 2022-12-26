@@ -13,8 +13,8 @@ function BasketPopup({ onClose, onRemove, items = [] }) {
         {items.length ? (
           <>
             <ul className="basket-popup__items">
-              {items.map((item, i) => (
-                <li className="basket-item" key={i}>
+              {items.map((item) => (
+                <li className="basket-item" key={item.id}>
                   <img
                     className="basket-item__image"
                     src={item.image}

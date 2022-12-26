@@ -1,6 +1,14 @@
 import Card from "../components/Card";
 
-function Home({ cards, searchItem, onChangeSearchInput, setSearchItem, handleAddToFavorites, handleAddToBasket }) {
+function Home({
+  cards,
+  basketItems,
+  searchItem,
+  onChangeSearchInput,
+  setSearchItem,
+  handleAddToFavorites,
+  handleAddToBasket,
+}) {
   return (
     <main>
       <section className="sneakers">
@@ -36,12 +44,11 @@ function Home({ cards, searchItem, onChangeSearchInput, setSearchItem, handleAdd
             )
             .map((card, i) => (
               <Card
-                image={card.image}
-                description={card.description}
-                price={card.price}
                 key={i}
-                onFavorite={(card) => handleAddToFavorites(card)}
-                onAddButton={(card) => handleAddToBasket(card)}
+                onFavorite={(item) => handleAddToFavorites(item)}
+                onAddButton={(item) => handleAddToBasket(item)}
+                added={basketItems.some((item) => Number(item.id) === Number(card.id))}
+                {...card}
               />
             ))}
         </ul>
