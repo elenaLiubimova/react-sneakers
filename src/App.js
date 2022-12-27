@@ -1,12 +1,14 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { createContext } from "react";
 import axios from "axios";
 import "./App.css";
 import Header from "./components/Header";
 import BasketPopup from "./components/BasketPopup";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
+import AppContext from "./context";
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -18,12 +20,15 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const cardsResponse = await axios
-      .get("https://63a8083e7989ad3286f8f72f.mockapi.io/cards");
-      const basketResponse = await axios
-      .get("https://63a8083e7989ad3286f8f72f.mockapi.io/basket");
-      const favoritesResponse = await axios
-      .get("https://63a8083e7989ad3286f8f72f.mockapi.io/favorites");
+      const cardsResponse = await axios.get(
+        "https://63a8083e7989ad3286f8f72f.mockapi.io/cards"
+      );
+      const basketResponse = await axios.get(
+        "https://63a8083e7989ad3286f8f72f.mockapi.io/basket"
+      );
+      const favoritesResponse = await axios.get(
+        "https://63a8083e7989ad3286f8f72f.mockapi.io/favorites"
+      );
 
       setIsLoading(false);
 
@@ -38,10 +43,17 @@ function App() {
   const handleAddToBasket = (newItem) => {
     try {
       if (basketItems.find((item) => Number(item.id) === Number(newItem.id))) {
-        axios.delete(`https://63a8083e7989ad3286f8f72f.mockapi.io/basket/${newItem.id}`);
-        setBasketItems(prev => prev.filter((item) => Number(item.id)) != Number(newItem.id));
+        axios.delete(
+          `https://63a8083e7989ad3286f8f72f.mockapi.io/basket/${newItem.id}`
+        );
+        setBasketItems(
+          (prev) => prev.filter((item) => Number(item.id)) != Number(newItem.id)
+        );
       } else {
-        axios.post("https://63a8083e7989ad3286f8f72f.mockapi.io/basket", newItem);
+        axios.post(
+          "https://63a8083e7989ad3286f8f72f.mockapi.io/basket",
+          newItem
+        );
         setBasketItems((prev) => [...prev, newItem]);
       }
     } catch (error) {
@@ -62,7 +74,10 @@ function App() {
         );
         // setFavorites((prev) => prev.filter((item) => item.id !== card.id));
       } else {
-        const { data } = await axios.post(`https://63a8083e7989ad3286f8f72f.mockapi.io/favorites`, card);
+        const { data } = await axios.post(
+          `https://63a8083e7989ad3286f8f72f.mockapi.io/favorites`,
+          card
+        );
         setFavorites((prev) => [...prev, data]);
       }
     } catch (error) {
@@ -74,45 +89,50 @@ function App() {
     setSearchItem(evt.target.value);
   };
 
-  return (
-    <>
-      {isBasketPopupOpened && (
-        <BasketPopup
-          items={basketItems}
-          onClose={() => setIsBasketPopupOpened(false)}
-          onRemove={handleRemoveFromBasket}
-        />
-      )}
-      ;
-      <Header onClickBasket={() => setIsBasketPopupOpened(true)} />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              cards={cards}
-              basketItems={basketItems}
-              searchItem={searchItem}
-              onChangeSearchInput={onChangeSearchInput}
-              setSearchItem={setSearchItem}
-              handleAddToFavorites={handleAddToFavorites}
-              handleAddToBasket={handleAddToBasket}
-              isLoading={isLoading}
-            />
-          }
-        />
+  const isItemAdded = (id) => {
+    return basketItems.some((item) => Number(item.id) === Number(id))
+  }
 
-        <Route
-          path="/favorites"
-          element={
-            <Favorites
-              cards={favorites}
-              onAddToFavorite={handleAddToFavorites}
-            />
-          }
-        />
-      </Routes>
-    </>
+  return (
+    <AppContext.Provider value={{ basketItems, favorites, cards, isItemAdded }}>
+      <>
+        {isBasketPopupOpened && (
+          <BasketPopup
+            items={basketItems}
+            onClose={() => setIsBasketPopupOpened(false)}
+            onRemove={handleRemoveFromBasket}
+          />
+        )}
+        ;
+        <Header onClickBasket={() => setIsBasketPopupOpened(true)} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Home
+                cards={cards}
+                basketItems={basketItems}
+                searchItem={searchItem}
+                onChangeSearchInput={onChangeSearchInput}
+                setSearchItem={setSearchItem}
+                handleAddToFavorites={handleAddToFavorites}
+                handleAddToBasket={handleAddToBasket}
+                isLoading={isLoading}
+              />
+            }
+          />
+
+          <Route
+            path="/favorites"
+            element={
+              <Favorites
+                onAddToFavorite={handleAddToFavorites}
+              />
+            }
+          />
+        </Routes>
+      </>
+    </AppContext.Provider>
   );
 }
 

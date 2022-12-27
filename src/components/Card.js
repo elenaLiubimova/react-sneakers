@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useContext } from "react";
 import ContentLoader from "react-content-loader";
+import AppContext from "../context";
 
 function Card({
   id,
@@ -12,12 +14,11 @@ function Card({
   added = false,
   loading = false,
 }) {
-  const [isAdded, setIsAdded] = useState(added);
+  const { isItemAdded } = useContext(AppContext);
   const [isFavorite, setIsFavorite] = useState(favorited);
 
   const handleButtonClick = () => {
     onAddButton({ id, image, description, price });
-    setIsAdded(!isAdded);
   };
 
   const onClickFavorite = () => {
@@ -60,7 +61,7 @@ function Card({
             <p className="card__price-number">{price}</p>
             <button
               className={
-                isAdded
+                false
                   ? `card__add-button card__add-button_active`
                   : `card__add-button`
               }

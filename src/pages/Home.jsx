@@ -1,31 +1,32 @@
+import { useContext } from "react";
 import Card from "../components/Card";
 
 function Home({
   cards,
-  basketItems,
   searchItem,
   onChangeSearchInput,
   setSearchItem,
   handleAddToFavorites,
   handleAddToBasket,
+  isLoading,
 }) {
+  
   const renderCards = () => {
-    return cards
-      .filter((card) =>
-        card.description.toLowerCase().includes(searchItem.toLowerCase())
-      )
-      .map((card, i) => (
-        <Card
-          key={i}
-          onFavorite={(item) => handleAddToFavorites(item)}
-          onAddButton={(item) => handleAddToBasket(item)}
-          added={basketItems.some(
-            (item) => Number(item.id) === Number(card.id)
-          )}
-          {...card}
-          loading
-        />
-      ));
+    return (
+      isLoading
+        ? [...Array(8)]
+        : cards.filter((card) =>
+            card.description.toLowerCase().includes(searchItem.toLowerCase())
+          )
+    ).map((card, i) => (
+      <Card
+        key={i}
+        onFavorite={(item) => handleAddToFavorites(item)}
+        onAddButton={(item) => handleAddToBasket(item)}
+        loading={isLoading}
+        {...card}
+      />
+    ));
   };
 
   return (
