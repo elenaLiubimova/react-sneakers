@@ -1,4 +1,41 @@
+import { useState } from "react";
+import { useContext } from "react";
+import Info from "./Info";
+import AppContext from "../context";
+import axios from "axios";
+
+const delay = () => new Promise((resolve) => setTimeout(resolve, 1000));
+
 function BasketPopup({ onClose, onRemove, items = [] }) {
+  const [orderId, setOrderId] = useState(null);
+  const { basketItems, setBasketItems } = useContext(AppContext);
+  const [isOrderComplete, setIsOrderComplete] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onClickOrder = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post(
+        "https://63a8083e7989ad3286f8f72f.mockapi.io/orders",
+        {items: basketItems}
+      );
+
+      setOrderId(data.id);
+      setIsOrderComplete(true);
+      setBasketItems([]);
+      for (let i = 0; i < basketItems.length; i++) {
+        const item = basketItems[i];
+        await axios.delete(
+          `https://63a8083e7989ad3286f8f72f.mockapi.io/basket/${item.id}`);
+        await delay();
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <div className="basket-popup">
       <div className="basket-popup__container">
@@ -45,27 +82,29 @@ function BasketPopup({ onClose, onRemove, items = [] }) {
                   </span>
                 </li>
               </ul>
-              <button className="basket-popup__order-button" type="button">
+              <button
+                className="basket-popup__order-button"
+                type="button"
+                onClick={onClickOrder}
+                disabled={isLoading}
+              >
                 Оформить заказ
                 <span className="basket-popup__order-button-arrow">&rarr;</span>
               </button>
             </div>
           </>
         ) : (
-          <div className="basket-popup__empty-basket">
-            <img
-              className="basket-popup__empty-basket-image"
-              src="/images/empty-basket.jpg"
-              alt="Пустая корзина"
-            />
-            <h2 className="basket-popup__empty-basket-title">Корзина пустая</h2>
-            <p className="basket-popup__empty-basket-description">
-              Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.
-            </p>
-            <button className="basket-popup__order-button" type="button" onClick={onClose}>
-              &larr; Вернуться назад
-            </button>
-          </div>
+          <Info
+            title={isOrderComplete ? "Заказ оформлен!" : "Корзина пустая"}
+            description={
+              isOrderComplete
+                ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке`
+                : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ"
+            }
+            image={
+              isOrderComplete ? "/images/order.jpg" : "/images/empty-basket.jpg"
+            }
+          />
         )}
       </div>
     </div>

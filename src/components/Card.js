@@ -11,7 +11,6 @@ function Card({
   onAddButton,
   onFavorite,
   favorited = false,
-  added = false,
   loading = false,
 }) {
   const { isItemAdded } = useContext(AppContext);
@@ -61,7 +60,7 @@ function Card({
             <p className="card__price-number">{price}</p>
             <button
               className={
-                false
+                isItemAdded(id)
                   ? `card__add-button card__add-button_active`
                   : `card__add-button`
               }

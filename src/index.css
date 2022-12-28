@@ -185,6 +185,12 @@
   cursor: pointer;
 }
 
+.basket-popup__order-button:disabled {
+  background-color: rgb(146, 140, 140);
+
+  cursor: default;
+}
+
 .header {
   position: relative;
   
