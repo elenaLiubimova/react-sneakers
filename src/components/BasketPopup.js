@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useContext } from "react";
 import Info from "./Info";
-import AppContext from "../context";
 import axios from "axios";
+import { useBasket } from "../hooks/useBasket";
 
 const delay = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
 function BasketPopup({ onClose, onRemove, items = [] }) {
+  const { basketItems, setBasketItems, basketPrice } = useBasket();
   const [orderId, setOrderId] = useState(null);
-  const { basketItems, setBasketItems } = useContext(AppContext);
   const [isOrderComplete, setIsOrderComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -72,13 +71,13 @@ function BasketPopup({ onClose, onRemove, items = [] }) {
                 <li className="basket-popup__result-item">
                   Итого:
                   <span className="basket-popup__result-item-bold">
-                    21 498 руб.
+                    {basketPrice} руб.
                   </span>
                 </li>
                 <li className="basket-popup__result-item">
                   Налог 5%:
                   <span className="basket-popup__result-item-bold">
-                    1074 руб.
+                    {(basketPrice * 0.05).toFixed(2)} руб.
                   </span>
                 </li>
               </ul>
