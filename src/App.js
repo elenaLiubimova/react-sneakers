@@ -43,19 +43,29 @@ function App() {
 
   const handleAddToBasket = async (newItem) => {
     try {
-      if (basketItems.find((item) => Number(item.id) === Number(newItem.id))) {
+      const findItem = basketItems.find((item) => Number(item.itemId) === Number(newItem.id));
+      if (findItem) {
         setBasketItems(
-          (prev) => prev.filter((item) => Number(item.id)) != Number(newItem.id)
+          (prev) => prev.filter((item) => Number(item.itemId)) != Number(newItem.id)
         );
         axios.delete(
-          `https://63a8083e7989ad3286f8f72f.mockapi.io/basket/${newItem.id}`
+          `https://63a8083e7989ad3286f8f72f.mockapi.io/basket/${findItem.id}`
         );
       } else {
-        axios.post(
+        setBasketItems((prev) => [...prev, newItem]);
+        const { data } = axios.post(
           "https://63a8083e7989ad3286f8f72f.mockapi.io/basket",
           newItem
         );
-        setBasketItems((prev) => [...prev, newItem]);
+        setBasketItems((prev) => prev.map(item => {
+          if (item.itemId === data.itemId) {
+            return {
+              ...item,
+              id: data.id,
+            }
+          }
+          return item;
+        }));
       }
     } catch (error) {
       console.log(error);
@@ -65,7 +75,7 @@ function App() {
   const handleRemoveFromBasket = async (id) => {
     try {
       axios.delete(`https://63a8083e7989ad3286f8f72f.mockapi.io/basket/${id}`);
-      setBasketItems((prev) => prev.filter((item) => item.id !== id));
+      setBasketItems((prev) => prev.filter((item) => Number(item.id) !== Number(id)));
     } catch (error) {
       console.log(error);
     }
@@ -97,7 +107,7 @@ function App() {
   };
 
   const isItemAdded = (id) => {
-    return basketItems.some((item) => Number(item.id) === Number(id));
+    return basketItems.some((item) => Number(item.itemId) === Number(id));
   };
 
   return (
